@@ -2,8 +2,8 @@
 # and modules which are available in
 # tkinter and ttk module
 from tkinter import *
-from tkinter.ttk import *
 from PIL import Image, ImageTk
+from main import gui
  
 # creates a Tk() object
 master = Tk()
@@ -20,23 +20,9 @@ screen_height = master.winfo_screenheight()
 # function to open a new window
 # on a button click
 def openNewWindow():
+    print()
      
-    # Toplevel object which will
-    # be treated as a new window
-    newWindow = Toplevel(master)
- 
-    # sets the title of the
-    # Toplevel widget
-    newWindow.title("New Window")
- 
-    # sets the geometry of toplevel
-    newWindow.geometry("800x600")
-
-    # newWindow.attributes('-fullscreen', True)
- 
-    # A Label widget to show in toplevel
-    Label(newWindow,
-          text ="This is a new window").pack()
+    
  
  
 appTitle = Label(master,

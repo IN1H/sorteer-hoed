@@ -153,7 +153,6 @@ class App():
             
         return q_list
 
-# maak de GUI Window.
 gui = Tk()
 
 # Easter egg code die geactiveerd wordt met de "h" toets.
@@ -180,13 +179,12 @@ gui.iconbitmap("assets/icon.ico")
 
 # Event voor de easter egg.
 gui.bind('<Key>', key)
- 
+
 # Verkrijg de data van de database.
 data = Database().get_all()
 question, options = data, data
 
 # Maak de app.
 app = App()
- 
-# Start the GUI.
+
 gui.mainloop()
