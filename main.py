@@ -11,7 +11,10 @@ user = User()
 class App():
 
     # Initialiseren van de class
-    def __init__(self):
+    def __init__(self, gui):
+        self.gui = gui
+
+        self.data = Database().get_all()
 
         # Huidige vraag nummer (Begint bij 0)
         self.q_no=0
@@ -20,11 +23,11 @@ class App():
         self.User = User()
 
         # sla de scherm resolutie op.
-        self.screen_width = gui.winfo_screenwidth()
-        self.screen_height = gui.winfo_screenheight()
+        self.screen_width = self.gui.winfo_screenwidth()
+        self.screen_height = self.gui.winfo_screenheight()
 
         # Vraag label
-        self.question_label = ttk.Label(gui, text="", width=70, wraplength=750, justify="left", style="Custom.TLabel", anchor= 'w' )
+        self.question_label = ttk.Label(self.gui, text="", width=70, wraplength=750, justify="left", style="Custom.TLabel", anchor= 'w' )
         self.question_label.place(x=self.screen_width/4, y=self.screen_height/3 - 80)
 
         # Laat de vraag zien.
@@ -43,7 +46,7 @@ class App():
         self.buttons()
         
         # De lengte van de quiz.
-        self.data_size=len(data)
+        self.data_size=len(self.data)
 
     # Volgende knop  
     def volgende_knop(self):
@@ -52,7 +55,7 @@ class App():
         if self.opt_selected.get() > 0:
 
             # Stop de punten indeling van het huidige antwoord in een variabele.
-            punten = data[self.q_no]["Answers"][(self.opt_selected.get()-1)]
+            punten = self.data[self.q_no]["Answers"][(self.opt_selected.get()-1)]
 
             # Voeg aan de gebruiker de punten voor elke richting toe.
             self.User.add_bdam(punten["BDAM"]).add_fict(punten["FICT"]).add_iat(punten["IAT"]).add_se(punten["SE"]).add_niks(punten["niks"])
@@ -72,7 +75,7 @@ class App():
 
             # Als op de laatste vraag antwoord is gegeven, laat de uitslag zien en vernietig de gui.
             if self.q_no == self.data_size:
-                gui.destroy()
+                self.gui.destroy()
                 messagebox.showinfo("Klaar!",eind_resultaat(self.User.get_max()))
              
             # Render de vraag en antwoorden.
@@ -88,14 +91,14 @@ class App():
     def buttons(self):
         
         # Maak de volgende knop
-        next_button = ttk.Button(gui, text="Volgende",command=self.volgende_knop,
+        next_button = ttk.Button(self.gui, text="Volgende",command=self.volgende_knop,
         width=10,style="Custom.TButton")
          
         # Plaats de volgende knop
-        next_button.place(x=self.screen_width/4,y=screen_height/3 + 320)
+        next_button.place(x=self.screen_width/4,y=self.screen_height/3 + 320)
          
         # Maak de stop knop
-        quit_button = ttk.Button(gui, text="Afsluiten", command=gui.destroy, width=10,style="Custom.TButton")
+        quit_button = ttk.Button(self.gui, text="Afsluiten", command=self.gui.destroy, width=10,style="Custom.TButton")
 
         # Plaats de stop knop
         quit_button.place(x=self.screen_width - 140, y=self.screen_height - 160)
@@ -108,7 +111,7 @@ class App():
         self.opt_selected.set(0)
 
         # Voeg de antwoorden toe aan de huidige antwoord lijst.
-        for option in options[self.q_no]['Answers']:
+        for option in self.data[self.q_no]['Answers']:
             self.opts[val]['text']=option['answer']
             val+=1
 
@@ -128,7 +131,7 @@ class App():
     def display_question(self):
 
         # Stel de label op de huidige vraag van de database in.
-        self.question_label['text'] = f"Vraag {self.q_no + 1}: {question[self.q_no]['question']}"
+        self.question_label['text'] = f"Vraag {self.q_no + 1}: {self.data[self.q_no]['question']}"
 
     # Laat de antwoord knoppen zien.
     def radio_buttons(self):
@@ -142,7 +145,7 @@ class App():
         while len(q_list) < 5:
             
             # Radiobutton styling.
-            radio_btn = ttk.Radiobutton(gui,text=" ",variable=self.opt_selected, value = len(q_list)+1,style="Custom.TRadiobutton")
+            radio_btn = ttk.Radiobutton(self.gui,text=" ",variable=self.opt_selected, value = len(q_list)+1,style="Custom.TRadiobutton")
              
             q_list.append(radio_btn)
             
@@ -152,39 +155,3 @@ class App():
             y_pos += 60
             
         return q_list
-
-gui = Tk()
-
-# Easter egg code die geactiveerd wordt met de "h" toets.
-def key(event):
-    if event.char == "h":
-        play()
-
-# Scherm breedte & hoogte.
-screen_width = gui.winfo_screenwidth()
-screen_height = gui.winfo_screenheight()
-
-# Standaard styling configuraties.
-style = ttk.Style()
-style.configure("Custom.TLabel", background="#ececec", foreground="#000", font="Ariel 16 bold")
-style.configure("Custom.TButton", activebackground="#d9d9d9", fg="black", font="Ariel 16 bold")
-style.configure("Custom.TRadiobutton", background="#ececec", foreground="#000", font="Ariel 14", wraplength=600, justify="left")
-
-# View configuratie.
-gui.geometry(f"{screen_width}x{screen_height}")
-gui.configure(bg="#ececec")
-gui.state("zoomed")
-gui.title("IN1H - sorteerhoed")
-gui.iconbitmap("assets/icon.ico")
-
-# Event voor de easter egg.
-gui.bind('<Key>', key)
-
-# Verkrijg de data van de database.
-data = Database().get_all()
-question, options = data, data
-
-# Maak de app.
-app = App()
-
-gui.mainloop()

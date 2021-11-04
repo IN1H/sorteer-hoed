@@ -1,16 +1,22 @@
 # This will import all the widgets
 # and modules which are available in
 # tkinter and ttk module
+from db import Database
+from main import App
+from tkinter import ttk
 from tkinter import *
 from PIL import Image, ImageTk
-from main import gui
- 
+
 # creates a Tk() object
+from playSound import play
+
 master = Tk()
 
 # sets the geometry of main
 # root window
 master.geometry("800x600")
+master.state("zoomed")
+
 screen_width = master.winfo_screenwidth()
 screen_height = master.winfo_screenheight()
 
@@ -20,8 +26,39 @@ screen_height = master.winfo_screenheight()
 # function to open a new window
 # on a button click
 def openNewWindow():
-    print()
-     
+    master.destroy()
+    gui = Tk()
+
+    # # Easter egg code die geactiveerd wordt met de "h" toets.
+    def key(event):
+        if event.char == "h":
+            play()
+
+    # Scherm breedte & hoogte.
+    screen_width = gui.winfo_screenwidth()
+    screen_height = gui.winfo_screenheight()
+
+    # Standaard styling configuraties.
+    style = ttk.Style()
+    style.configure("Custom.TLabel", background="#ececec", foreground="#000", font="Ariel 16 bold")
+    style.configure("Custom.TButton", activebackground="#d9d9d9", fg="black", font="Ariel 16 bold")
+    style.configure("Custom.TRadiobutton", background="#ececec", foreground="#000", font="Ariel 14", wraplength=600,
+                    justify="left")
+
+    # View configuratie.
+    gui.geometry(f"{screen_width}x{screen_height}")
+    gui.configure(bg="#ececec")
+    gui.state("zoomed")
+    gui.title("IN1H - sorteerhoed")
+    gui.iconbitmap("assets/icon.ico")
+
+    # Event voor de easter egg.
+    gui.bind('<Key>', key)
+
+    # Verkrijg de data van de database.
+
+    # Maak de app.
+    app = App(gui)
     
  
  
@@ -36,7 +73,7 @@ appTitle.grid(pady = 10, row=0, columnspan=4)
 appTitle.place(x = screen_width / 3, y = y_pos)
 
 appDesc = Label(master,
-              text ="Deze quiz is bedoeld om voor jou te bepalen welke van de 4 mogelijke Informatica richtingen het beste voor jou geschikt zijn. Er worden [number] vragen gesteld, en je antwoorden bepalen je meest geschikte richting(en).",
+              text =f"Deze quiz is bedoeld om voor jou te bepalen welke van de 4 mogelijke Informatica richtingen het beste voor jou geschikt zijn. Er worden {len(Database().get_all())} vragen gesteld, en je antwoorden bepalen je meest geschikte richting(en).",
               font=("Helvetica", 16),
               wraplength=600,
               justify="center")
@@ -101,4 +138,4 @@ btn.grid(pady = 1, row=3, columnspan=4)
 btn.place(x = screen_width / 2, y = y_pos)
  
 # mainloop, runs infinitely
-mainloop()
+master.mainloop()
