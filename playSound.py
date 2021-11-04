@@ -1,5 +1,3 @@
-
-from tkinter import *
 import pygame
 
 pygame.mixer.init()

@@ -152,6 +152,7 @@ class App():
         return q_list
 
 # maak de GUI Window
+
 gui = Tk()
 
 # Easter egg

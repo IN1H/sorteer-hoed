@@ -36,5 +36,3 @@ class Database:
 
     def get_answer_by_id(self, id):
         return (self.supabase.table('Answers').eq("id", f"{id}").execute())["data"]
-
-Database().get_questions()
