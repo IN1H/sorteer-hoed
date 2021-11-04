@@ -124,7 +124,7 @@ class App():
         if val == 4:
             self.opts[4].destroy()
 
-    # Laat de vraag zien
+    # Laat de vraag zien.
     def display_question(self):
 
         # Stel de label op de huidige vraag van de database in.
@@ -135,41 +135,43 @@ class App():
          
         q_list = []
         
-        # De positie van de antwoord knoppen
+        # De positie van de antwoord knoppen.
         y_pos = self.screen_height / 3
         
-        # Radiobutton while loop to display all options for each question
+        # Radiobutton while loop om alle opties voor de vragen te laten zien.
         while len(q_list) < 5:
-             
+            
+            # Radiobutton styling.
             radio_btn = ttk.Radiobutton(gui,text=" ",variable=self.opt_selected, value = len(q_list)+1,style="Custom.TRadiobutton")
              
             q_list.append(radio_btn)
-             
+            
+            # Radiobutton positionering.
             radio_btn.place(x = self.screen_width / 4, y = y_pos)
              
             y_pos += 60
             
         return q_list
 
-# maak de GUI Window
+# maak de GUI Window.
 gui = Tk()
 
-# Easter egg
+# Easter egg code die geactiveerd wordt met de "h" toets.
 def key(event):
     if event.char == "h":
         play()
 
-# Screen width & height
+# Scherm breedte & hoogte.
 screen_width = gui.winfo_screenwidth()
 screen_height = gui.winfo_screenheight()
 
-# Standard styling
+# Standaard styling configuraties.
 style = ttk.Style()
 style.configure("Custom.TLabel", background="#ececec", foreground="#000", font="Ariel 16 bold")
 style.configure("Custom.TButton", activebackground="#d9d9d9", fg="black", font="Ariel 16 bold")
 style.configure("Custom.TRadiobutton", background="#ececec", foreground="#000", font="Ariel 14", wraplength=600, justify="left")
 
-# View config
+# View configuratie.
 gui.geometry(f"{screen_width}x{screen_height}")
 gui.configure(bg="#ececec")
 gui.state("zoomed")
@@ -186,5 +188,5 @@ question, options = data, data
 # Maak de app.
 app = App()
  
-# Start the GUI
+# Start the GUI.
 gui.mainloop()
