@@ -99,7 +99,8 @@ img1Label.place(x = x_pos, y = y_pos)
 img2 = ImageTk.PhotoImage(Image.open("img/img2.png").resize((200, 200)))
 
 x_pos += screen_width / 8
-img2Label = Label(image=img2).image = img2
+img2Label = Label(image=img2)
+img2Label.image = img2
 img2Label.grid(column=1, row=2)
 img2Label.place(x = x_pos, y = y_pos)
 
@@ -113,9 +114,7 @@ img3Label.grid(column=2, row=2)
 img3Label.place(x = x_pos, y = y_pos)
 
 # Display [richting] icon
-getImg4 = Image.open("img/img4.png")
-resizeImg4 = getImg4.resize((200, 200))
-img4 = ImageTk.PhotoImage(resizeImg4)
+img4 = ImageTk.PhotoImage(Image.open("img/img4.png").resize((200, 200)))
 
 x_pos += screen_width / 8
 img4Label = Label(image=img4)
