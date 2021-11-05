@@ -1,157 +1,143 @@
+# This will import all the widgets
+# and modules which are available in
+# tkinter and ttk module
 from db import Database
-from klaar import eind_resultaat
-from playSound import play
-from user import User
-from tkinter import messagebox
+from app import App
 from tkinter import ttk
 from tkinter import *
+from PIL import Image, ImageTk
 
-user = User()
+# creates a Tk() object
+from playSound import play
 
-class App():
+master = Tk()
 
-    # Initialiseren van de class
-    def __init__(self, gui):
-        self.gui = gui
+# sets the geometry of main
+# root window
+master.geometry("800x600")
+master.state("zoomed")
 
-        self.data = Database().get_all()
+screen_width = master.winfo_screenwidth()
+screen_height = master.winfo_screenheight()
 
-        # Huidige vraag nummer (Begint bij 0)
-        self.q_no=0
-         
-        # Maak een nieuwe user voor de app.
-        self.User = User()
+# master.attributes('-fullscreen', True)
+ 
+ 
+# function to open a new window
+# on a button click
+def openNewWindow():
+    master.destroy()
+    gui = Tk()
 
-        # sla de scherm resolutie op.
-        self.screen_width = self.gui.winfo_screenwidth()
-        self.screen_height = self.gui.winfo_screenheight()
+    # # Easter egg code die geactiveerd wordt met de "h" toets.
+    def key(event):
+        if event.char == "h":
+            play()
 
-        # Vraag label
-        self.question_label = ttk.Label(self.gui, text="", width=70, wraplength=750, justify="left", style="Custom.TLabel", anchor= 'w' )
-        self.question_label.place(x=self.screen_width/4, y=self.screen_height/3 - 80)
+    # Scherm breedte & hoogte.
+    screen_width = gui.winfo_screenwidth()
+    screen_height = gui.winfo_screenheight()
 
-        # Laat de vraag zien.
-        self.display_question()
-         
-        # Variabel waar het opgegeven antwoord in wordt opgeslagen.
-        self.opt_selected=IntVar()
-         
-        # Plaats alle antwoord mogelijkheden in het scherm.
-        self.opts=self.radio_buttons()
-        
-        # Laat de antwoord mogelijkheden zien.
-        self.display_options()
-        
-        # laat de volgende en stop knop zien in het scherm.
-        self.buttons()
-        
-        # De lengte van de quiz.
-        self.data_size=len(self.data)
+    # Standaard styling configuraties.
+    style = ttk.Style()
+    style.configure("Custom.TLabel", background="#ececec", foreground="#000", font="Ariel 16 bold")
+    style.configure("Custom.TButton", activebackground="#d9d9d9", fg="black", font="Ariel 16 bold")
+    style.configure("Custom.TRadiobutton", background="#ececec", foreground="#000", font="Ariel 14", wraplength=600,
+                    justify="left")
 
-    # Volgende knop  
-    def volgende_knop(self):
+    # View configuratie.
+    gui.geometry(f"{screen_width}x{screen_height}")
+    gui.configure(bg="#ececec")
+    gui.state("zoomed")
+    gui.title("IN1H - sorteerhoed")
+    gui.iconbitmap("assets/icon.ico")
 
-        # Als de index van het geslecteerde antwoord groter dan 0 is is er een antwoord gegeven.
-        if self.opt_selected.get() > 0:
+    # Event voor de easter egg.
+    gui.bind('<Key>', key)
 
-            # Stop de punten indeling van het huidige antwoord in een variabele.
-            punten = self.data[self.q_no]["Answers"][(self.opt_selected.get()-1)]
+    # Verkrijg de data van de database.
 
-            # Voeg aan de gebruiker de punten voor elke richting toe.
-            self.User.add_bdam(punten["BDAM"]).add_fict(punten["FICT"]).add_iat(punten["IAT"]).add_se(punten["SE"]).add_niks(punten["niks"])
+    # Maak de app.
+    app = App(gui)
+    
+ 
+ 
+appTitle = Label(master,
+              text ="Welkom bij Team Trampoline's Informatica sorteer hoed quiz",
+              font=("Helvetica", 22),
+              wraplength=700,
+              justify="center")
 
-            # Verhoog de vraag index.
-            self.q_no += 1
+y_pos = screen_height / 6
+appTitle.grid(pady = 10, row=0, columnspan=4)
+appTitle.place(x = screen_width / 3, y = y_pos)
 
-            # Loop over de antwoorden en verwijder deze van het scherm.
-            i=0
-            for opt in self.opts:
-                self.opts[i].destroy()
-                i +=1
+appDesc = Label(master,
+              text =f"Deze quiz is bedoeld om voor jou te bepalen welke van de 4 mogelijke Informatica richtingen het beste voor jou geschikt zijn. Er worden {len(Database().get_all())} vragen gesteld, en je antwoorden bepalen je meest geschikte richting(en).",
+              font=("Helvetica", 16),
+              wraplength=600,
+              justify="center")
 
-            # Reset de antwoorden en maak de nieuwe aan
-            self.opts.clear()
-            self.opts = self.radio_buttons()
+y_pos = screen_height / 4
+appDesc.grid(pady = 20, row=1, columnspan=4)
+appDesc.place(x = screen_width / 3, y = y_pos)
 
-            # Als op de laatste vraag antwoord is gegeven, laat de uitslag zien en vernietig de gui.
-            if self.q_no == self.data_size:
-                self.gui.destroy()
-                messagebox.showinfo("Klaar!",eind_resultaat(self.User.get_max()))
-             
-            # Render de vraag en antwoorden.
-            else:
-                self.display_question()
-                self.display_options()
-        
-        # Laat een bericht zien dat de gebruiker niks heeft ingevuld.
-        else:
-            messagebox.showinfo("fout", "Selecteer een antwoord!")
+# Display [richting] icon
+getImg1 = Image.open("img/img1.png")
+resizeImg1 = getImg1.resize((200, 200))
+img1 = ImageTk.PhotoImage(resizeImg1)
 
-    # Laat de volgende & stop knop zien.
-    def buttons(self):
-        
-        # Maak de volgende knop
-        next_button = ttk.Button(self.gui, text="Volgende",command=self.volgende_knop,
-        width=10,style="Custom.TButton")
-         
-        # Plaats de volgende knop
-        next_button.place(x=self.screen_width/4,y=self.screen_height/3 + 320)
-         
-        # Maak de stop knop
-        quit_button = ttk.Button(self.gui, text="Afsluiten", command=self.gui.destroy, width=10,style="Custom.TButton")
+y_pos = screen_height / 3
+y_pos += 50
+x_pos = screen_width / 4
+img1Label = Label(image=img1)
+img1Label.image = img1
+img1Label.grid(column=0, row=2)
+img1Label.place(x = x_pos, y = y_pos)
 
-        # Plaats de stop knop
-        quit_button.place(x=self.screen_width - 140, y=self.screen_height - 160)
+# Display [richting] icon
+getImg2 = Image.open("img/img2.png")
+resizeImg2 = getImg2.resize((200, 200))
+img2 = ImageTk.PhotoImage(resizeImg2)
 
-         
-    # Laat alle antwoord opties zien.
-    def display_options(self):
-        val=0
+x_pos += screen_width / 8
+img2Label = Label(image=img2)
+img2Label.image = img2
+img2Label.grid(column=1, row=2)
+img2Label.place(x = x_pos, y = y_pos)
 
-        self.opt_selected.set(0)
+# Display [richting] icon
+getImg3 = Image.open("img/img3.png")
+resizeImg3 = getImg3.resize((200, 200))
+img3 = ImageTk.PhotoImage(resizeImg3)
 
-        # Voeg de antwoorden toe aan de huidige antwoord lijst.
-        for option in self.data[self.q_no]['Answers']:
-            self.opts[val]['text']=option['answer']
-            val+=1
+x_pos += screen_width / 7
+img3Label = Label(image=img3)
+img3Label.image = img3
+img3Label.grid(column=2, row=2)
+img3Label.place(x = x_pos, y = y_pos)
 
+# Display [richting] icon
+getImg4 = Image.open("img/img4.png")
+resizeImg4 = getImg4.resize((200, 200))
+img4 = ImageTk.PhotoImage(resizeImg4)
 
-        # Verwijder de lege antwoorden.
-        if val == 2:
-            self.opts[2].destroy()
-            self.opts[3].destroy()
-            self.opts[4].destroy()
-        if val == 3:
-            self.opts[3].destroy()
-            self.opts[4].destroy()
-        if val == 4:
-            self.opts[4].destroy()
+x_pos += screen_width / 8
+img4Label = Label(image=img4)
+img4Label.image = img4
+img4Label.grid(column=3, row=2)
+img4Label.place(x = x_pos, y = y_pos)
 
-    # Laat de vraag zien.
-    def display_question(self):
-
-        # Stel de label op de huidige vraag van de database in.
-        self.question_label['text'] = f"Vraag {self.q_no + 1}: {self.data[self.q_no]['question']}"
-
-    # Laat de antwoord knoppen zien.
-    def radio_buttons(self):
-         
-        q_list = []
-        
-        # De positie van de antwoord knoppen.
-        y_pos = self.screen_height / 3
-        
-        # Radiobutton while loop om alle opties voor de vragen te laten zien.
-        while len(q_list) < 5:
-            
-            # Radiobutton styling.
-            radio_btn = ttk.Radiobutton(self.gui,text=" ",variable=self.opt_selected, value = len(q_list)+1,style="Custom.TRadiobutton")
-             
-            q_list.append(radio_btn)
-            
-            # Radiobutton positionering.
-            radio_btn.place(x = self.screen_width / 4, y = y_pos)
-             
-            y_pos += 60
-            
-        return q_list
+# a button widget which will open a
+# new window on button click
+y_pos = screen_height / 1.5
+master.title("IN1H - sorteerhoed")
+master.iconbitmap("assets/icon.ico")
+btn = Button(master,
+             text ="Start",
+             command = openNewWindow)
+btn.grid(pady = 1, row=3, columnspan=4)
+btn.place(x = screen_width / 2, y = y_pos)
+ 
+# mainloop, runs infinitely
+master.mainloop()
