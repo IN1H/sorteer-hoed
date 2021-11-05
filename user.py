@@ -33,6 +33,11 @@ class User():
         self.niks = self.niks + int(count)
         return self
 
+    def get_index_of_max(self):
+        return [self.IAT, self.SE, self.FICT, self.BDAM, self.niks].index(max([self.IAT, self.SE, self.FICT, self.BDAM, self.niks]))
+
+    def get_score(self):
+        return [self.IAT, self.SE, self.FICT, self.BDAM, self.niks]
     # Functie zorgt ervoor dat er een specialisatie wordt gekozen met de meeste punten.
 
     def get_max(self):

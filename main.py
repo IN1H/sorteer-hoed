@@ -64,7 +64,7 @@ def openNewWindow():
  
 appTitle = Label(master,
               text ="Welkom bij Team Trampoline's Informatica sorteer hoed quiz",
-              font=("Helvetica", 22),
+              font=("Helvetica bold", 22),
               wraplength=700,
               justify="center")
 
@@ -73,7 +73,7 @@ appTitle.grid(pady = 10, row=0, columnspan=4)
 appTitle.place(x = screen_width / 3, y = y_pos)
 
 appDesc = Label(master,
-              text =f"Deze quiz is bedoeld om voor jou te bepalen welke van de 4 mogelijke Informatica richtingen het beste voor jou geschikt zijn. Er worden {len(Database().get_all())} vragen gesteld, en je antwoorden bepalen je meest geschikte richting(en).",
+              text =f"Deze quiz is bedoeld om voor jou te bepalen welke van de 4 mogelijke Informatica richtingen het beste voor jou geschikt is. Er worden {len(Database().get_all())} vragen gesteld, en je antwoorden bepalen je meest geschikte richting.",
               font=("Helvetica", 16),
               wraplength=600,
               justify="center")

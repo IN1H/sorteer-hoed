@@ -1,5 +1,5 @@
 from db import Database
-from klaar import eind_resultaat
+from klaar import eind_resultaat, eind_scherm_func
 from playSound import play
 from user import User
 from tkinter import messagebox
@@ -76,21 +76,7 @@ class App():
             # Als op de laatste vraag antwoord is gegeven, laat de uitslag zien en vernietig de gui.
             if self.q_no == self.data_size:
                 self.gui.destroy()
-
-                eind_scherm = Tk()
-                eind_scherm.geometry("800x600")
-                eind_scherm.state("zoomed")
-                eind_scherm.title("IN1H - sorteerhoed")
-                eind_scherm.iconbitmap("assets/icon.ico")
-                
-                Label(eind_scherm,
-                    text =eind_resultaat(self.User.get_max()),
-                    font=("Helvetica", 22),
-                    wraplength=700,
-                    justify="center"
-                ).pack()
-
-                eind_scherm.mainloop()
+                eind_scherm_func(self.User)
 
              
             # Render de vraag en antwoorden.
