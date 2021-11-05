@@ -77,20 +77,6 @@ class App():
             if self.q_no == self.data_size:
                 self.gui.destroy()
 
-                eind_scherm = Tk()
-                eind_scherm.geometry(f"{self.screen_width}x{self.screen_height}")
-                eind_scherm.state("zoomed")
-                eind_scherm.title("IN1H - sorteerhoed")
-                eind_scherm.iconbitmap("assets/icon.ico")
-                
-                Label(eind_scherm,
-                    text =eind_resultaat(self.User.get_max()),
-                    font=("Helvetica", 22),
-                    wraplength=700,
-                    justify="center"
-                ).pack()
-
-                eind_scherm.mainloop()
                 eind_scherm_func(self.User)
 
              

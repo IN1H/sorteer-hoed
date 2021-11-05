@@ -1,4 +1,6 @@
 from tkinter import *
+from tkinter import ttk
+
 
 
 def eind_resultaat(richting):
@@ -38,5 +40,15 @@ def eind_scherm_func(User):
         wraplength=700,
         justify="center"
     ).place(x = eind_scherm.winfo_screenwidth() / 3, y = eind_scherm.winfo_screenmmheight() / 3)
+
+    style = ttk.Style()
+    style.configure("Custom.TLabel", background="#ececec", foreground="#000", font="Ariel 16 bold")
+    style.configure("Custom.TButton", activebackground="#d9d9d9", fg="black", font="Ariel 16 bold")
+    style.configure("Custom.TRadiobutton", background="#ececec", foreground="#000", font="Ariel 14", wraplength=600, justify="left")
+
+
+    btn = ttk.Button(eind_scherm, text ="Afsluiten", command = eind_scherm.destroy, width = 10, style="Custom.TButton")
+    btn.grid(pady = 1, row=3, columnspan=4)
+    btn.place(x = eind_scherm.winfo_screenwidth() / 2.2, y = eind_scherm.winfo_screenmmheight() / 2)
 
     eind_scherm.mainloop()
