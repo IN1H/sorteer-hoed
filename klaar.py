@@ -21,6 +21,7 @@ def eind_resultaat(richting):
 
 def eind_scherm_func(User):
 
+
     eind_scherm = Tk()
     eind_scherm.geometry("800x600")
     eind_scherm.state("zoomed")
@@ -32,14 +33,14 @@ def eind_scherm_func(User):
         font=("Helvetica", 22),
         wraplength=700,
         justify="center"
-    ).place(x = eind_scherm.winfo_screenwidth() / 3, y = eind_scherm.winfo_screenmmheight() / 6)
+    ).place(x = eind_scherm.winfo_screenwidth() / 3, y = 100)
 
     Label(eind_scherm,
-        text =f"Voor de richting {User.get_max()} heb je {User.get_score()[User.get_index_of_max()]} punten",
+        text =f"Voor de richting {User.get_max()} heb je {User.get_score()[User.get_index_of_max()]} punten.",
         font=("Helvetica", 22),
         wraplength=700,
         justify="center"
-    ).place(x = eind_scherm.winfo_screenwidth() / 3, y = eind_scherm.winfo_screenmmheight() / 3)
+    ).place(x = eind_scherm.winfo_screenwidth() / 2.7, y =300 )
 
     style = ttk.Style()
     style.configure("Custom.TLabel", background="#ececec", foreground="#000", font="Ariel 16 bold")
@@ -49,6 +50,6 @@ def eind_scherm_func(User):
 
     btn = ttk.Button(eind_scherm, text ="Afsluiten", command = eind_scherm.destroy, width = 10, style="Custom.TButton")
     btn.grid(pady = 1, row=3, columnspan=4)
-    btn.place(x = eind_scherm.winfo_screenwidth() / 2.2, y = eind_scherm.winfo_screenmmheight() / 2)
+    btn.place(x = eind_scherm.winfo_screenwidth() / 2.2, y = 400)
 
     eind_scherm.mainloop()

@@ -58,7 +58,7 @@ def openNewWindow():
     # Verkrijg de data van de database.
 
     # Maak de app.
-    App(gui)
+    app = App(gui)
     
  
  
