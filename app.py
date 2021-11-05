@@ -1,5 +1,5 @@
 from db import Database
-from klaar import eind_resultaat
+from klaar import eind_resultaat, eind_scherm_func
 from playSound import play
 from user import User
 from tkinter import messagebox
@@ -91,6 +91,7 @@ class App():
                 ).pack()
 
                 eind_scherm.mainloop()
+                eind_scherm_func(self.User)
 
              
             # Render de vraag en antwoorden.
