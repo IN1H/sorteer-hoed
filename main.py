@@ -12,13 +12,14 @@ from playSound import play
 
 master = Tk()
 
-# sets the geometry of main
-# root window
-master.geometry("800x600")
-master.state("zoomed")
-
 screen_width = master.winfo_screenwidth()
 screen_height = master.winfo_screenheight()
+
+# sets the geometry of main
+# root window
+master.geometry(f"{screen_width}x{screen_height}")
+# master.configure(bg="#ececec")
+master.state("zoomed")
 
 # master.attributes('-fullscreen', True)
  
@@ -42,8 +43,7 @@ def openNewWindow():
     style = ttk.Style()
     style.configure("Custom.TLabel", background="#ececec", foreground="#000", font="Ariel 16 bold")
     style.configure("Custom.TButton", activebackground="#d9d9d9", fg="black", font="Ariel 16 bold")
-    style.configure("Custom.TRadiobutton", background="#ececec", foreground="#000", font="Ariel 14", wraplength=600,
-                    justify="left")
+    style.configure("Custom.TRadiobutton", background="#ececec", foreground="#000", font="Ariel 14", wraplength=600, justify="left")
 
     # View configuratie.
     gui.geometry(f"{screen_width}x{screen_height}")
@@ -64,7 +64,7 @@ def openNewWindow():
  
 appTitle = Label(master,
               text ="Welkom bij Team Trampoline's Informatica sorteer hoed quiz",
-              font=("Helvetica", 22),
+              font=("Ariel", 22, "bold"),
               wraplength=700,
               justify="center")
 
@@ -74,7 +74,7 @@ appTitle.place(x = screen_width / 3, y = y_pos)
 
 appDesc = Label(master,
               text =f"Deze quiz is bedoeld om voor jou te bepalen welke van de 4 mogelijke Informatica richtingen het beste voor jou geschikt zijn. Er worden {len(Database().get_all())} vragen gesteld, en je antwoorden bepalen je meest geschikte richting(en).",
-              font=("Helvetica", 16),
+              font=("Ariel", 16),
               wraplength=600,
               justify="center")
 
@@ -127,9 +127,7 @@ img4Label.place(x = x_pos, y = y_pos)
 y_pos = screen_height / 1.5
 master.title("IN1H - sorteerhoed")
 master.iconbitmap("assets/icon.ico")
-btn = Button(master,
-             text ="Start",
-             command = openNewWindow)
+btn = Button(master, text ="Start", command = openNewWindow, font = ("Ariel", 16, "bold"), width = 10)
 btn.grid(pady = 1, row=3, columnspan=4)
 btn.place(x = screen_width / 2, y = y_pos)
  

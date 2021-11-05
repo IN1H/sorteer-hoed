@@ -78,7 +78,7 @@ class App():
                 self.gui.destroy()
 
                 eind_scherm = Tk()
-                eind_scherm.geometry("800x600")
+                eind_scherm.geometry(f"{self.screen_width}x{self.screen_height}")
                 eind_scherm.state("zoomed")
                 eind_scherm.title("IN1H - sorteerhoed")
                 eind_scherm.iconbitmap("assets/icon.ico")
