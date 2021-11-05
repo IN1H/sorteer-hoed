@@ -96,20 +96,15 @@ img1Label.grid(column=0, row=2)
 img1Label.place(x = x_pos, y = y_pos)
 
 # Display [richting] icon
-getImg2 = Image.open("img/img2.png")
-resizeImg2 = getImg2.resize((200, 200))
-img2 = ImageTk.PhotoImage(resizeImg2)
+img2 = ImageTk.PhotoImage(Image.open("img/img2.png").resize((200, 200)))
 
 x_pos += screen_width / 8
-img2Label = Label(image=img2)
-img2Label.image = img2
+img2Label = Label(image=img2).image = img2
 img2Label.grid(column=1, row=2)
 img2Label.place(x = x_pos, y = y_pos)
 
 # Display [richting] icon
-getImg3 = Image.open("img/img3.png")
-resizeImg3 = getImg3.resize((200, 200))
-img3 = ImageTk.PhotoImage(resizeImg3)
+img3 = ImageTk.PhotoImage(Image.open("img/img3.png").resize((200, 200)))
 
 x_pos += screen_width / 7
 img3Label = Label(image=img3)
